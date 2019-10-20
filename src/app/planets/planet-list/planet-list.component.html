@@ -1,0 +1,41 @@
+<div class="input-group md-form form-sm form-1 pl-0 my-4">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-text1">
+      <i class="fas fa-search" aria-hidden="true"></i>
+    </span>
+  </div>
+  <input class="form-control my-0 py-1" [(ngModel)]="term" type="text" placeholder="Search" aria-label="Search">
+</div>
+<p *ngIf="!loadedPlanets || loadedPlanets.length === 0">No planets available!</p>
+<table *ngIf="loadedPlanets || loadedPlanets.length > 0" [ngClass]="'table table-sm table-striped'">
+  <thead [ngClass]="'thead-dark'">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Climate</th>
+      <th scope="col">Terrain</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let planet of loadedPlanets | filter: term | paginate: config">
+      <th scope="row">{{ planet.id }}</th>
+      <td>{{ planet.name }}</td>
+      <td>{{ planet.climate }}</td>
+      <td>{{ planet.terrain }}</td>
+      <td><a class="btn btn-primary" [routerLink] = "['../planet', planet.id]"> View Details </a></td>
+    </tr>
+  </tbody>
+</table>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Items per page</label>
+    </div>
+    <select (change)="onChangePaginationItemsPerPage($event.target.value)" class="browser-default custom-select">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="100">100</option>
+    </select>
+</div>    
+<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
